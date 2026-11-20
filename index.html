@@ -135,7 +135,90 @@ section{padding:50px 6%}
 <a class="btn" href="tel:+37378280689">☎ 078 280 689</a>
 <a class="btn" href="https://wa.me/37378280689">WhatsApp</a>
 </div>
+<section id="comanda" style="background:#f4f6f8;padding:30px 18px;margin:25px 0;border-radius:12px;">
+<h2 style="text-align:center;color:#101827;">COMANDĂ TRANSPORT ȘI HAMALI</h2>
+<p style="text-align:center;">Alege mașina și numărul de hamali. Prețul se calculează automat.</p>
 
+<form id="orderForm" style="max-width:500px;margin:auto;">
+<label>Tipul mașinii:</label>
+<select id="car" required style="width:100%;padding:12px;margin:8px 0;">
+<option value="400">1,5 tone — 400 lei/oră</option>
+<option value="550">3 tone — 550 lei/oră</option>
+<option value="750">5 tone — 750 lei/oră</option>
+<option value="850">7 tone — 850 lei/oră</option>
+<option value="1000">10 tone — 1000 lei/oră</option>
+</select>
+
+<label>Număr hamali:</label>
+<select id="workers" style="width:100%;padding:12px;margin:8px 0;">
+<option value="0">Fără hamali</option>
+<option value="1">1 hamal</option>
+<option value="2">2 hamali</option>
+<option value="3">3 hamali</option>
+<option value="4">4 hamali</option>
+<option value="5">5 hamali</option>
+<option value="6">6 hamali</option>
+</select>
+
+<label>Număr de ore:</label>
+<input id="hours" type="number" min="1" value="1" required style="width:100%;padding:12px;margin:8px 0;">
+
+<h3 id="total" style="color:#16834a;text-align:center;">Total estimativ: 400 lei</h3>
+
+<label>Numele și prenumele:</label>
+<input id="client" required style="width:100%;padding:12px;margin:8px 0;">
+
+<label>Telefon:</label>
+<input id="phone" type="tel" required style="width:100%;padding:12px;margin:8px 0;">
+
+<label>Adresa de preluare:</label>
+<input id="from" required style="width:100%;padding:12px;margin:8px 0;">
+
+<label>Destinația:</label>
+<input id="to" required style="width:100%;padding:12px;margin:8px 0;">
+
+<label>Data și ora:</label>
+<input id="date" type="datetime-local" required style="width:100%;padding:12px;margin:8px 0;">
+
+<button type="submit" style="width:100%;padding:15px;background:#16834a;color:white;border:0;border-radius:8px;font-size:17px;font-weight:bold;margin-top:15px;">
+TRIMITE COMANDA PE WHATSAPP
+</button>
+</form>
+</section>
+
+<script>
+const car = document.getElementById('car');
+const workers = document.getElementById('workers');
+const hours = document.getElementById('hours');
+const total = document.getElementById('total');
+
+function calculate() {
+  const sum = (Number(car.value) + Number(workers.value) * 170) * Math.max(1, Number(hours.value) || 1);
+  total.textContent = 'Total estimativ: ' + sum + ' lei';
+  return sum;
+}
+
+car.addEventListener('change', calculate);
+workers.addEventListener('change', calculate);
+hours.addEventListener('input', calculate);
+
+document.getElementById('orderForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const sum = calculate();
+  const message = `COMANDĂ MOVRENTA
+Mașină: ${car.options[car.selectedIndex].text}
+Hamali: ${workers.value}
+Ore: ${hours.value}
+Total estimativ: ${sum} lei
+Client: ${document.getElementById('client').value}
+Telefon: ${document.getElementById('phone').value}
+Preluare: ${document.getElementById('from').value}
+Destinație: ${document.getElementById('to').value}
+Data și ora: ${document.getElementById('date').value}`;
+  window.open('https://wa.me/37378280689?text=' + encodeURIComponent(message), '_blank');
+});
+calculate();
+</script>
 <footer>
 <div class="logo">MOVRENTA<span>.MD</span></div>
 <p>Hamali și transport în toată Moldova</p>
